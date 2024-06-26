@@ -1,0 +1,23 @@
+services:
+  database-server:
+    image: postgres:13
+    restart: unless-stopped
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    env_file:
+      - ../backend/.env
+
+  dev-server:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    depends_on:
+      - database-server
+    command: sleep infinity
+    volumes:
+      - cargo-cache:/usr/local/cargo
+      - ..:/workspace:cached
+
+volumes:
+  database-data:
+  cargo-cache:
