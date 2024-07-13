@@ -1,54 +1,42 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-// import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+// Importing your components from the new path
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Facturacion from './pages/Facturacion';
+import InscripcionAlumno from './pages/InscripcionAlumno';
+import InscripcionTerapeuta from './pages/InscripcionTerapeuta';
+import Pagos from './pages/Pagos';
+import Calculadora from './pages/Calculadora';
+import ReportesAlumnos from './pages/ReportesAlumnos';
+import ReportesIndustria from './pages/ReportesIndustria';
+import Profiles from './pages/Profiles';
+import ProfilePage from './pages/ProfilePage';
+import NotFoundPage from './pages/NotFoundPage';
+import Login from './pages/Login';
+
+import './App.css';
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    // setGreetMsg(await invoke("greet", { name }));
-    setGreetMsg(`Hello, ${name}!`);
-  }
-
   return (
-    <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <button type="submit">Greet</button>
-      </form>
-
-      <p>{greetMsg}</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/facturacion" element={<Facturacion />} />
+        <Route path="/inscripcion_alumno" element={<InscripcionAlumno />} />
+        <Route path="/inscripcion_terapeuta" element={<InscripcionTerapeuta />} />
+        <Route path="/pagos" element={<Pagos />} />
+        <Route path="/calculadora" element={<Calculadora />} />
+        <Route path="/reportes_alumnos" element={<ReportesAlumnos />} />
+        <Route path="/reportes_industria" element={<ReportesIndustria />} />
+        <Route path="/profiles" element={<Profiles />}>
+          <Route path=":profileId" element={<ProfilePage />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
-export default App;
+export default App; 
