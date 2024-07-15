@@ -112,96 +112,194 @@
 
 
 // Version 3
+// import React from 'react';
+// import { Link } from 'react-router-dom';
+// import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+// import { CaretDownIcon } from '@radix-ui/react-icons';
+// import './Header.css';
+
+// const Header = () => {
+//   return (
+//     <NavigationMenu.Root className="NavigationMenuRoot" orientation="vertical">
+//       <NavigationMenu.List className="NavigationMenuList">
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/" className="NavigationMenuLink">Home</Link>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//           <NavigationMenu.Item className="NavigationMenuTrigger">
+//             <NavigationMenu.Trigger>
+//               Inscripciones <CaretDownIcon className="CaretDown" aria-hidden />
+//             </NavigationMenu.Trigger>
+//             <NavigationMenu.Content className="NavigationMenuContent">
+//               <NavigationMenu.Sub>   
+//                 <NavigationMenu.List className="NavigationMenuList">
+//                   <NavigationMenu.Item>
+//                     <Link to="/inscripcion_alumno" className="NavigationMenuLink">Alumnos</Link>
+//                   </NavigationMenu.Item>
+//                   <NavigationMenu.Item>
+//                     <Link to="/inscripcion_terapeuta" className="NavigationMenuLink">Terapeutas</Link>
+//                   </NavigationMenu.Item>
+//                 </NavigationMenu.List>
+//               </NavigationMenu.Sub>  
+//             </NavigationMenu.Content>            
+//           </NavigationMenu.Item>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/calculadora" className="NavigationMenuLink">Calculadora</Link>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/dashboard" className="NavigationMenuLink">Dashboard</Link>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/pagos" className="NavigationMenuLink">Pagos</Link>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//           <NavigationMenu.Item className="NavigationMenuTrigger">
+//             <NavigationMenu.Trigger>
+//               Perfiles <CaretDownIcon className="CaretDown" aria-hidden />
+//             </NavigationMenu.Trigger>
+//             <NavigationMenu.Content className="NavigationMenuContent">
+//               <NavigationMenu.Sub>   
+//                 <NavigationMenu.List className="NavigationMenuList">
+//                   <NavigationMenu.Item>
+//                     <Link to="/profiles_alumnos" className="NavigationMenuLink">Alumnos</Link>
+//                   </NavigationMenu.Item>
+//                   <NavigationMenu.Item>
+//                     <Link to="/profiles_terapeutas" className="NavigationMenuLink">Terapeutas</Link>
+//                   </NavigationMenu.Item>
+//                 </NavigationMenu.List>
+//               </NavigationMenu.Sub>  
+//             </NavigationMenu.Content>            
+//           </NavigationMenu.Item>
+//         </NavigationMenu.Item>
+
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/reportes_alumnos" className="NavigationMenuLink">Reportar Alumno</Link>
+//         </NavigationMenu.Item>
+
+//         <NavigationMenu.Item className="NavigationMenuItem">
+//             <Link to="/reportes_industria" className="NavigationMenuLink">Reportes de Produccion</Link>
+//         </NavigationMenu.Item>
+
+//       </NavigationMenu.List>
+
+//     </NavigationMenu.Root>
+//   );
+// };
+
+// export default Header;
+
+
+// Version 4
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { CaretDownIcon } from '@radix-ui/react-icons';
 import './Header.css';
+import * as Popover from '@radix-ui/react-popover';
+import { MixerHorizontalIcon, Cross2Icon } from '@radix-ui/react-icons';
+
 
 const Header = () => {
   return (
-    <NavigationMenu.Root className="NavigationMenuRoot" orientation="vertical">
-      <NavigationMenu.List className="NavigationMenuList">
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/" className="NavigationMenuLink">Home</Link>
-        </NavigationMenu.Item>
+    <Popover.Root>
+      <Popover.Trigger asChild>
+        <button className="IconButton" aria-label="Update dimensions">
+          <MixerHorizontalIcon />
+        </button>
+      </Popover.Trigger>
+      <Popover.Portal>
+        <Popover.Content className="PopoverContent" sideOffset={5}>
+          {/* <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}> */}
 
-        <NavigationMenu.Item className="NavigationMenuItem">
-          <NavigationMenu.Item className="NavigationMenuTrigger">
-            <NavigationMenu.Trigger>
-              Inscripciones <CaretDownIcon className="CaretDown" aria-hidden />
-            </NavigationMenu.Trigger>
-            <NavigationMenu.Content className="NavigationMenuContent">
-              <NavigationMenu.Sub>   
-                <NavigationMenu.List className="NavigationMenuList">
-                  <NavigationMenu.Item>
-                    <Link to="/inscripcion_alumno" className="NavigationMenuLink">Alumnos</Link>
+            {/* <p className="Text" style={{ marginBottom: 10 }}>
+              Menu
+            </p> */}
+
+            <NavigationMenu.Root className="NavigationMenuRoot" orientation="vertical">
+              <NavigationMenu.List className="NavigationMenuList">
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/" className="NavigationMenuLink">Home</Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item className="NavigationMenuItem">
+                  <NavigationMenu.Item className="NavigationMenuTrigger">
+                    <NavigationMenu.Trigger>
+                      Inscripciones <CaretDownIcon className="CaretDown" aria-hidden />
+                    </NavigationMenu.Trigger>
+                    <NavigationMenu.Content className="NavigationMenuContent">
+                      <NavigationMenu.Sub>   
+                        <NavigationMenu.List className="NavigationMenuList">
+                          <NavigationMenu.Item>
+                            <Link to="/inscripcion_alumno" className="NavigationMenuLink">Alumnos</Link>
+                          </NavigationMenu.Item>
+                          <NavigationMenu.Item>
+                            <Link to="/inscripcion_terapeuta" className="NavigationMenuLink">Terapeutas</Link>
+                          </NavigationMenu.Item>
+                        </NavigationMenu.List>
+                      </NavigationMenu.Sub>  
+                    </NavigationMenu.Content>            
                   </NavigationMenu.Item>
-                  <NavigationMenu.Item>
-                    <Link to="/inscripcion_terapeuta" className="NavigationMenuLink">Terapeutas</Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/calculadora" className="NavigationMenuLink">Calculadora</Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/dashboard" className="NavigationMenuLink">Dashboard</Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/pagos" className="NavigationMenuLink">Pagos</Link>
+                </NavigationMenu.Item>
+
+                <NavigationMenu.Item className="NavigationMenuItem">
+                  <NavigationMenu.Item className="NavigationMenuTrigger">
+                    <NavigationMenu.Trigger>
+                      Perfiles <CaretDownIcon className="CaretDown" aria-hidden />
+                    </NavigationMenu.Trigger>
+                    <NavigationMenu.Content className="NavigationMenuContent">
+                      <NavigationMenu.Sub>   
+                        <NavigationMenu.List className="NavigationMenuList">
+                          <NavigationMenu.Item>
+                            <Link to="/profiles_alumnos" className="NavigationMenuLink">Alumnos</Link>
+                          </NavigationMenu.Item>
+                          <NavigationMenu.Item>
+                            <Link to="/profiles_terapeutas" className="NavigationMenuLink">Terapeutas</Link>
+                          </NavigationMenu.Item>
+                        </NavigationMenu.List>
+                      </NavigationMenu.Sub>  
+                    </NavigationMenu.Content>            
                   </NavigationMenu.Item>
-                </NavigationMenu.List>
-              </NavigationMenu.Sub>  
-            </NavigationMenu.Content>            
-          </NavigationMenu.Item>
-        </NavigationMenu.Item>
-
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/calculadora" className="NavigationMenuLink">Calculadora</Link>
-        </NavigationMenu.Item>
-
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/dashboard" className="NavigationMenuLink">Dashboard</Link>
-        </NavigationMenu.Item>
-
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/pagos" className="NavigationMenuLink">Pagos</Link>
-        </NavigationMenu.Item>
-
-        <NavigationMenu.Item className="NavigationMenuItem">
-          <NavigationMenu.Item className="NavigationMenuTrigger">
-            <NavigationMenu.Trigger>
-              Perfiles <CaretDownIcon className="CaretDown" aria-hidden />
-            </NavigationMenu.Trigger>
-            <NavigationMenu.Content className="NavigationMenuContent">
-              <NavigationMenu.Sub>   
-                <NavigationMenu.List className="NavigationMenuList">
-                  <NavigationMenu.Item>
-                    <Link to="/profiles_alumnos" className="NavigationMenuLink">Alumnos</Link>
-                  </NavigationMenu.Item>
-                  <NavigationMenu.Item>
-                    <Link to="/profiles_terapeutas" className="NavigationMenuLink">Terapeutas</Link>
-                  </NavigationMenu.Item>
-                </NavigationMenu.List>
-              </NavigationMenu.Sub>  
-            </NavigationMenu.Content>            
-          </NavigationMenu.Item>
-        </NavigationMenu.Item>
+                </NavigationMenu.Item>
 
 
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/reportes_alumnos" className="NavigationMenuLink">Reportar Alumno</Link>
-        </NavigationMenu.Item>
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/reportes_alumnos" className="NavigationMenuLink">Reportar Alumno</Link>
+                </NavigationMenu.Item>
 
-        <NavigationMenu.Item className="NavigationMenuItem">
-            <Link to="/reportes_industria" className="NavigationMenuLink">Reportes de Produccion</Link>
-        </NavigationMenu.Item>
+                <NavigationMenu.Item className="NavigationMenuItem">
+                    <Link to="/reportes_industria" className="NavigationMenuLink">Reportes de Produccion</Link>
+                </NavigationMenu.Item>
 
-      </NavigationMenu.List>
+              </NavigationMenu.List>
 
-    </NavigationMenu.Root>
-//     <NavigationMenu.Root orientation="vertical" className="NavigationMenuRoot">
-//   <NavigationMenu.List className="NavigationMenuList">
-//     <NavigationMenu.Item>
-//       <NavigationMenu.Trigger className="NavigationMenuTrigger">Item one</NavigationMenu.Trigger>
-//       <NavigationMenu.Content>Item one content</NavigationMenu.Content>
-//     </NavigationMenu.Item>
-//     <NavigationMenu.Item>
-//       <NavigationMenu.Trigger className="NavigationMenuTrigger">Item two</NavigationMenu.Trigger>
-//       <NavigationMenu.Content>Item Two content</NavigationMenu.Content>
-//     </NavigationMenu.Item>
-//   </NavigationMenu.List>
-// </NavigationMenu.Root>
+            </NavigationMenu.Root>
+          {/* </div> */}
+          {/* <Popover.Close className="PopoverClose" aria-label="Close">
+           <Cross2Icon />
+          </Popover.Close> */}
+          {/* <Popover.Arrow className="PopoverArrow" /> */}
+        </Popover.Content>
+      </Popover.Portal>
+    </Popover.Root>
   );
 };
 
