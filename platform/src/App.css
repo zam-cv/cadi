@@ -1,4 +1,8 @@
-.logo.vite:hover {
+:root{
+  background-color: linear-gradient(330deg, hsl(140, 53%, 50%) 0%, hsl(226, 68%, 56%) 100%);
+}
+
+/* .logo.vite:hover {
   filter: drop-shadow(0 0 2em #747bff);
 }
 
@@ -113,4 +117,4 @@ button {
   button:active {
     background-color: #0f0f0f69;
   }
-}
+} */

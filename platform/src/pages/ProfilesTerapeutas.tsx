@@ -1,7 +1,6 @@
-import './Login.css';
-export default function Login() {
+export default function Profiles() {
   return(
-    <form className = "DisplayCMenu">
+    <form>
       <h1>Login</h1>
       <label>Username</label>
       <input type="text"/>
