@@ -197,21 +197,20 @@
 
 
 // Version 4
-import React from 'react';
+// import React from 'react';
 import { Link } from 'react-router-dom';
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import { CaretDownIcon } from '@radix-ui/react-icons';
+import { CaretDownIcon, HomeIcon, MixerHorizontalIcon } from '@radix-ui/react-icons';
 import './Header.css';
 import * as Popover from '@radix-ui/react-popover';
-import { MixerHorizontalIcon, Cross2Icon } from '@radix-ui/react-icons';
-
 
 const Header = () => {
   return (
+    <div className="fondoHeader">
     <Popover.Root>
       <Popover.Trigger asChild>
         <button className="IconButton" aria-label="Update dimensions">
-          <MixerHorizontalIcon />
+          <HomeIcon />
         </button>
       </Popover.Trigger>
       <Popover.Portal>
@@ -227,12 +226,11 @@ const Header = () => {
                 <NavigationMenu.Item className="NavigationMenuItem">
                     <Link to="/" className="NavigationMenuLink">Home</Link>
                 </NavigationMenu.Item>
-
                 <NavigationMenu.Item className="NavigationMenuItem">
                   <NavigationMenu.Item className="NavigationMenuTrigger">
-                    <NavigationMenu.Trigger>
+                    <NavigationMenu.Trigger> 
                       Inscripciones <CaretDownIcon className="CaretDown" aria-hidden />
-                    </NavigationMenu.Trigger>
+                    </NavigationMenu.Trigger>                    
                     <NavigationMenu.Content className="NavigationMenuContent">
                       <NavigationMenu.Sub>   
                         <NavigationMenu.List className="NavigationMenuList">
@@ -300,6 +298,7 @@ const Header = () => {
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>
+    </div>
   );
 };
 

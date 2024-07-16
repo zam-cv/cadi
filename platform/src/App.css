@@ -1,5 +1,13 @@
-:root{
-  background-color: linear-gradient(330deg, hsl(140, 53%, 50%) 0%, hsl(226, 68%, 56%) 100%);
+html, body{
+  height: 100%; 
+  margin: 0; 
+  box-sizing: border-box;
+}
+
+#root{
+  height: 100%; 
+  margin: 0; 
+  box-sizing: border-box;
 }
 
 /* .logo.vite:hover {
