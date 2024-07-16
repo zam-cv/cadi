@@ -210,7 +210,7 @@ const Header = () => {
     <Popover.Root>
       <Popover.Trigger asChild>
         <button className="IconButton" aria-label="Update dimensions">
-          <HomeIcon />
+          <HomeIcon className="icon-size" />
         </button>
       </Popover.Trigger>
       <Popover.Portal>
