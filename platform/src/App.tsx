@@ -59,32 +59,37 @@ import ProfilePageTerapeuta from './pages/ProfilePageTerapeuta';
 import NotFoundPage from './pages/NotFoundPage';
 import Login from './pages/Login';
 import Header from './componentes/Header'; // Import the Header component
+
+import { AuthProvider } from './context/AuthContext';
+
 import './App.css';
 
 const App: FC = () => {
   return (
-    <BrowserRouter>
-      <Header /> {/* Include the Header component here */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/facturacion" element={<Facturacion />} />
-        <Route path="/inscripcion_alumno" element={<InscripcionAlumno />} />
-        <Route path="/inscripcion_terapeuta" element={<InscripcionTerapeuta />} />
-        <Route path="/pagos" element={<Pagos />} />
-        <Route path="/calculadora" element={<Calculadora />} />
-        <Route path="/reportes_alumnos" element={<ReportesAlumnos />} />
-        <Route path="/reportes_industria" element={<ReportesIndustria />} />
-        <Route path="/profiles_alumnos" element={<ProfilesAlumnos />}>
-          <Route path=":profileId" element={<ProfilePageAlumno />} />
-        </Route>
-        <Route path="/profiles_terapeutas" element={<ProfilesTerapeutas />}>
-          <Route path=":profileId" element={<ProfilePageTerapeuta />} />
-        </Route>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Header /> {/* Include the Header component here */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/facturacion" element={<Facturacion />} />
+          <Route path="/inscripcion_alumno" element={<InscripcionAlumno />} />
+          <Route path="/inscripcion_terapeuta" element={<InscripcionTerapeuta />} />
+          <Route path="/pagos" element={<Pagos />} />
+          <Route path="/calculadora" element={<Calculadora />} />
+          <Route path="/reportes_alumnos" element={<ReportesAlumnos />} />
+          <Route path="/reportes_industria" element={<ReportesIndustria />} />
+          <Route path="/profiles_alumnos" element={<ProfilesAlumnos />}>
+            <Route path=":profileId" element={<ProfilePageAlumno />} />
+          </Route>
+          <Route path="/profiles_terapeutas" element={<ProfilesTerapeutas />}>
+            <Route path=":profileId" element={<ProfilePageTerapeuta />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
