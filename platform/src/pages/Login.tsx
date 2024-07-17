@@ -1,114 +1,70 @@
-// // src/pages/Login.tsx
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-// import './Login.css';
-// import { useAuth } from '../context/AuthContext';
-// import { login as loginService } from '../services/authService';
-
-// const Login: React.FC = () => {
-//   const [username, setUsername] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [error, setError] = useState('');
-//   const auth = useAuth();
-//   const navigate = useNavigate(); // Usa useNavigate
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError('');
-//     try {
-//       const response = await loginService(username, password);
-//       auth.login(response.token);
-//       navigate('/dashboard'); // Redirige al usuario al dashboard después de un login exitoso
-//     } catch (err) {
-//       setError('Invalid username or password');
-//     }
-//   };
-
-//   return (
-//     <form className="DisplayCMenu" onSubmit={handleSubmit}>
-//       <h1>Login</h1>
-//       {error && <p className="error">{error}</p>}
-//       <label>Username</label>
-//       <input 
-//         type="text" 
-//         value={username} 
-//         onChange={(e) => setUsername(e.target.value)} 
-//         required 
-//       />
-
-//       <label>Password</label>
-//       <input 
-//         type="password" 
-//         value={password} 
-//         onChange={(e) => setPassword(e.target.value)} 
-//         required 
-//       />
-
-//       <button type="submit">Login</button>
-//     </form>
-//   );
-// };
-
-// export default Login;
-
-// src/pages/Login.tsx
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
-import { useAuth } from '../context/AuthContext';
-import { login as loginService } from '../services/authService';
-import SignUp from './SignUp';
+import { useAuth } from '@/hooks/useAuth';
+import { handleKeyDown, handleEnter } from "@/utils";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
-const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
-  const auth = useAuth();
+export default function Login() {
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const navigate = useNavigate();
+  const { signin } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const response = await loginService(username, password);
-      auth.login(response.token);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Invalid username or password');
-    }
-  };
+  function handleLogin() {
+    signin(email, password, navigate);
+  }
 
-  const switchToSignUp = () => setIsLogin(false);
-  const switchToLogin = () => setIsLogin(true);
-
-  return isLogin ? (
-    <form className="DisplayCMenu" onSubmit={handleSubmit}>
-      <h1>Login</h1>
-      {error && <p className="error">{error}</p>}
-      <label>Username</label>
-      <input 
-        type="text" 
-        value={username} 
-        onChange={(e) => setUsername(e.target.value)} 
-        required 
-      />
-
-      <label>Password</label>
-      <input 
-        type="password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-        required 
-      />
-
-      <button type="submit">Login</button>
-      <p>Don't have an account?</p>
-      <button type="button" className="signup-button" onClick={switchToSignUp}>Sign Up</button>
-    </form>
-  ) : (
-    <SignUp switchToLogin={switchToLogin} />
+  return (
+    <div className="flex justify-center items-center w-full h-full">
+      <Card className="mx-auto max-w-sm">
+        <CardHeader>
+          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardDescription>
+            Enter your email below to login to your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => handleKeyDown(e, passwordRef)}
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+            <Label htmlFor="password">Password</Label>
+              <Input
+                ref={passwordRef}
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => handleEnter(e, handleLogin)}
+                required />
+            </div>
+            <Button type="submit" onClick={handleLogin} className="w-full font-bold">
+              Login
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
-};
-
-export default Login;
+}

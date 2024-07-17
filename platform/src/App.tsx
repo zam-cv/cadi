@@ -1,95 +1,165 @@
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-// // Importing your components from the new path
-// import Home from './pages/Home';
-// import Dashboard from './pages/Dashboard';
-// import Facturacion from './pages/Facturacion';
-// import InscripcionAlumno from './pages/InscripcionAlumno';
-// import InscripcionTerapeuta from './pages/InscripcionTerapeuta';
-// import Pagos from './pages/Pagos';
-// import Calculadora from './pages/Calculadora';
-// import ReportesAlumnos from './pages/ReportesAlumnos';
-// import ReportesIndustria from './pages/ReportesIndustria';
-// import Profiles from './pages/Profiles';
-// import ProfilePage from './pages/ProfilePage';
-// import NotFoundPage from './pages/NotFoundPage';
-// import Login from './pages/Login';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import LayoutSystem from "./components/LayoutSystem";
+import "./App.css";
 
-// import './App.css';
+// security
+import Protected from "./components/Protected";
+import Unprotected from "./components/Unprotected";
 
-// function App() {
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/login" element={<Login />} />
-//         <Route path="/dashboard" element={<Dashboard />} />
-//         <Route path="/facturacion" element={<Facturacion />} />
-//         <Route path="/inscripcion_alumno" element={<InscripcionAlumno />} />
-//         <Route path="/inscripcion_terapeuta" element={<InscripcionTerapeuta />} />
-//         <Route path="/pagos" element={<Pagos />} />
-//         <Route path="/calculadora" element={<Calculadora />} />
-//         <Route path="/reportes_alumnos" element={<ReportesAlumnos />} />
-//         <Route path="/reportes_industria" element={<ReportesIndustria />} />
-//         <Route path="/profiles" element={<Profiles />}>
-//           <Route path=":profileId" element={<ProfilePage />} />
-//         </Route>
-//         <Route path="*" element={<NotFoundPage />} />
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// }
+// providers
+import SettingsProvider from "./providers/SettingsProvider";
+import AuthProvider from "./providers/AuthProvider";
 
-// export default App; 
+// pages
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 
-// src/App.tsx
-import { BrowserRouter, Routes, Route, FC} from "react-router-dom";
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import Facturacion from './pages/Facturacion';
-import InscripcionAlumno from './pages/InscripcionAlumno';
-import InscripcionTerapeuta from './pages/InscripcionTerapeuta';
-import Pagos from './pages/Pagos';
-import Calculadora from './pages/Calculadora';
-import ReportesAlumnos from './pages/ReportesAlumnos';
-import ReportesIndustria from './pages/ReportesIndustria';
-import ProfilesAlumnos from './pages/ProfilesAlumnos';
-import ProfilePageAlumno from './pages/ProfilePageAlumno';
-import ProfilesTerapeutas from './pages/ProfilesTerapeutas';
-import ProfilePageTerapeuta from './pages/ProfilePageTerapeuta';
-import NotFoundPage from './pages/NotFoundPage';
-import Login from './pages/Login';
-import Header from './componentes/Header'; // Import the Header component
+import EnrollStudents from "./pages/Home/EnrollStudents";
+import EnrollTherapists from "./pages/Home/EnrollTherapists";
+import MakeProductionReports from "./pages/Home/MakeProductionReports";
+import MakeReports from "./pages/Home/MakeReports";
+import SeeCalculator from "./pages/Home/SeeCalculator";
+import SeeDashboard from "./pages/Home/SeeDashboard";
+import SeeProductionReports from "./pages/Home/SeeProductionReports";
+import SeeReports from "./pages/Home/SeeReports";
+import SeeReportsAsRelative from "./pages/Home/SeeReportsAsRelative";
+import SeeStudents from "./pages/Home/SeeStudents";
+import SeeTherapists from "./pages/Home/SeeTherapists";
 
-import { AuthProvider } from './context/AuthContext';
-
-import './App.css';
-
-const App: FC = () => {
+function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Header /> {/* Include the Header component here */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/facturacion" element={<Facturacion />} />
-          <Route path="/inscripcion_alumno" element={<InscripcionAlumno />} />
-          <Route path="/inscripcion_terapeuta" element={<InscripcionTerapeuta />} />
-          <Route path="/pagos" element={<Pagos />} />
-          <Route path="/calculadora" element={<Calculadora />} />
-          <Route path="/reportes_alumnos" element={<ReportesAlumnos />} />
-          <Route path="/reportes_industria" element={<ReportesIndustria />} />
-          <Route path="/profiles_alumnos" element={<ProfilesAlumnos />}>
-            <Route path=":profileId" element={<ProfilePageAlumno />} />
-          </Route>
-          <Route path="/profiles_terapeutas" element={<ProfilesTerapeutas />}>
-            <Route path=":profileId" element={<ProfilePageTerapeuta />} />
-          </Route>
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <SettingsProvider>
+      <LayoutSystem>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                {/* Login */}
+                <Route
+                  index
+                  path="/"
+                  element={
+                    <Unprotected>
+                      <Login />
+                    </Unprotected>
+                  }
+                />
+
+                {/* Home */}
+                <Route
+                  path="/home"
+                  element={
+                    <Protected>
+                      <Home />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/enroll_students"
+                  element={
+                    <Protected>
+                      <EnrollStudents />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/enroll_therapists"
+                  element={
+                    <Protected>
+                      <EnrollTherapists />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/make_production_reports"
+                  element={
+                    <Protected>
+                      <MakeProductionReports />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/make_reports"
+                  element={
+                    <Protected>
+                      <MakeReports />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_calculator"
+                  element={
+                    <Protected>
+                      <SeeCalculator />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_dashboard"
+                  element={
+                    <Protected>
+                      <SeeDashboard />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_production_reports"
+                  element={
+                    <Protected>
+                      <SeeProductionReports />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_reports"
+                  element={
+                    <Protected>
+                      <SeeReports />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_reports_as_relative"
+                  element={
+                    <Protected>
+                      <SeeReportsAsRelative />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_students"
+                  element={
+                    <Protected>
+                      <SeeStudents />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/see_therapists"
+                  element={
+                    <Protected>
+                      <SeeTherapists />
+                    </Protected>
+                  }
+                />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </LayoutSystem>
+    </SettingsProvider >
   );
 }
 

@@ -44,11 +44,16 @@ code cadi
 RUST_LOG=debug
 HOST=0.0.0.0
 PORT=8080
-DATABASE_URL=postgres://admin:awdrqwer12@127.0.0.1:5432/cadi
+DATABASE_URL=postgres://admin:awdrqwer12@database-server:5432/cadi
+
+SECRET_KEY=secret
 
 POSTGRES_USER=admin
 POSTGRES_PASSWORD=awdrqwer12
 POSTGRES_DB=cadi
+
+ADMIN_DEFAULT_EMAIL=admin@cadi.com
+ADMIN_DEFAULT_PASSWORD=awdrqwer12
 ```
 
 5. Open the project in a container
@@ -68,6 +73,7 @@ npm install
 
 ```bash
 cd backend
+diesel setup
 cargo run
 ```
 
