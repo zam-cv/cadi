@@ -31,9 +31,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
   function signout() {
     localStorage.removeItem("token");
-    api.auth.logout().then(() => {
-      setIsAuthenticated(false);
-    })
+    api.auth.logout()
+    setIsAuthenticated(false);
   }
 
   function signin(email: string, password: string, navigate: NavigateFunction) {
