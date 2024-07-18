@@ -13,6 +13,7 @@ pub struct Therapist {
     #[serde(skip_deserializing)]
     #[diesel(deserialize_as = i32)]
     pub id: Option<i32>,
+    #[serde(skip_deserializing)]
     pub user_id: i32,
     #[validate(length(min = 1, max = 50))]
     pub firstname: String,

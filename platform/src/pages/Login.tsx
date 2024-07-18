@@ -29,15 +29,15 @@ export default function Login() {
     <div className="flex justify-center items-center w-full h-full">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Iniciar Sesión en Cadi Go</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Ingresa tu correo y contraseña para continuar.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Correo electrónico</Label>
               <Input
                 id="email"
                 type="email"
@@ -49,7 +49,7 @@ export default function Login() {
               />
             </div>
             <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Contraseña</Label>
               <Input
                 ref={passwordRef}
                 id="password"

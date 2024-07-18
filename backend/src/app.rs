@@ -31,6 +31,7 @@ pub async fn app() -> std::io::Result<()> {
             .service(
                 web::scope("/api")
                     .service(controllers::auth::routes())
+                    .service(controllers::therapist::routes()),
             )
     })
     .bind(format!("{}:{}", host, port))?

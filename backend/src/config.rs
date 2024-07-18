@@ -28,7 +28,7 @@ async fn apply_permissions(
     role_type: RoleType,
     permissions_type: Vec<PermissionType>,
 ) -> anyhow::Result<()> {
-    let role = database.get_role_by_name(role_type.clone()).await?;
+    let role_id = database.get_role_id_by_name(role_type.clone()).await?;
     let mut permissions: Vec<models::Permission> = Vec::new();
 
     for permission in permissions_type.iter() {
@@ -39,17 +39,17 @@ async fn apply_permissions(
         }
     }
 
-    if let Some(role) = role {
+    if let Some(role_id) = role_id {
         for permission in permissions.iter() {
             if database
-                .get_role_permission(role.id.unwrap(), permission.id.unwrap())
+                .get_role_permission(role_id, permission.id.unwrap())
                 .await?
                 .is_some()
             {
                 continue;
             }
 
-            if let (Some(role_id), Some(permission_id)) = (role.id, permission.id) {
+            if let Some(permission_id) = permission.id {
                 database
                     .create_role_permission(models::RolePermission {
                         id: None,
@@ -66,7 +66,7 @@ async fn apply_permissions(
 
 async fn create_roles(database: &Database) -> anyhow::Result<()> {
     for role in ROLES.iter() {
-        if database.get_role_by_name(role.clone()).await?.is_some() {
+        if database.get_role_id_by_name(role.clone()).await?.is_some() {
             continue;
         }
 
@@ -151,11 +151,9 @@ async fn create_default_admin(database: &Database) -> anyhow::Result<()> {
         None => match utils::hash_password(&password.clone()) {
             Ok(hash) => {
                 let role_id = database
-                    .get_role_by_name(RoleType::Admin)
+                    .get_role_id_by_name(RoleType::Admin)
                     .await?
-                    .expect("Admin role not found")
-                    .id
-                    .expect("Admin role id not found");
+                    .expect("Admin role not found");
 
                 let new_admin = models::User {
                     id: None,

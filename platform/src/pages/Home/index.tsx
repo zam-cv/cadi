@@ -39,37 +39,37 @@ const sections = [
   },
   {
     route: "see_production_reports",
-    title: "Ver Reportes de Producción",
+    title: "Reportes de Producción",
     description: "Reportes, inventario, etc",
     details: "Filtrar, Analizar, etc"
   },
   {
     route: "see_reports",
-    title: "Ver Reportes",
+    title: "Reportes",
     description: "Reportes, asociaciones, etc",
     details: "Filtrar, Analizar, etc"
   },
   {
     route: "see_students",
-    title: "Ver Estudiantes",
+    title: "Estudiantes",
     description: "Calificaciones, detalles, etc",
     details: "Seguimiento, etc"
   },
   {
     route: "see_therapists",
-    title: "Ver Terapeutas",
+    title: "Terapeutas",
     description: "Información, asignaciones, etc",
     details: "Seguimiento, etc"
   },
   {
     route: "make_production_reports",
-    title: "Hacer Reportes de Producción",
+    title: "Crear un Reporte de Producción",
     description: "Crear reportes de producción",
     details: "Agregar, etc"
   },
   {
     route: "make_reports",
-    title: "Hacer Reportes",
+    title: "Crear un Reporte",
     description: "Crear reportes",
     details: "Agregar, etc"
   },

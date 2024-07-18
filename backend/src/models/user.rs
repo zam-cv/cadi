@@ -18,5 +18,6 @@ pub struct User {
     #[validate(length(min = 8))]
     #[serde(skip_serializing)]
     pub password: String,
+    #[serde(skip_deserializing)]
     pub role_id: i32,
 }

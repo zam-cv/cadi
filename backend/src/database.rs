@@ -4,6 +4,22 @@ use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager, PooledConnection};
 use std::env;
 
+pub trait DbResponder<T> {
+    fn to_web(self) -> actix_web::Result<T, actix_web::Error>;
+}
+
+impl<T: serde::Serialize> DbResponder<T> for anyhow::Result<T> {
+    fn to_web(self) -> actix_web::Result<T, actix_web::Error> {
+        match self {
+            Ok(data) => Ok(data),
+            Err(e) => {
+                log::error!("Database error: {:?}", e);
+                Err(actix_web::error::ErrorBadRequest("Failed"))
+            }
+        }
+    }
+}
+
 pub type DBPool = r2d2::Pool<ConnectionManager<PgConnection>>;
 
 #[derive(Clone)]
@@ -100,13 +116,14 @@ impl Database {
         .await
     }
 
-    pub async fn get_role_by_name(
+    pub async fn get_role_id_by_name(
         &self,
         name: models::types::RoleType,
-    ) -> anyhow::Result<Option<models::Role>> {
+    ) -> anyhow::Result<Option<i32>> {
         self.query_wrapper(move |conn| {
             schema::roles::table
                 .filter(schema::roles::name.eq(name))
+                .select(schema::roles::id)
                 .first(conn)
                 .optional()
         })
@@ -171,6 +188,16 @@ impl Database {
                 .filter(schema::users::id.eq(user_id))
                 .select(schema::permissions::name)
                 .load(conn)
+        })
+        .await
+    }
+
+    pub async fn create_therapist(&self, new_therapist: models::Therapist) -> anyhow::Result<i32> {
+        self.query_wrapper(move |conn| {
+            diesel::insert_into(schema::therapists::table)
+                .values(&new_therapist)
+                .returning(schema::therapists::id)
+                .get_result(conn)
         })
         .await
     }
