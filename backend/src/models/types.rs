@@ -11,6 +11,8 @@ pub enum PermissionType {
     EnrollStudents,
     #[serde(alias = "enroll_therapists", rename = "enroll_therapists")]
     EnrollTherapists,
+    #[serde(alias = "enroll_relatives", rename = "enroll_relatives")]
+    EnrollRelatives,
     #[serde(alias = "see_calculator", rename = "see_calculator")]
     SeeCalculator,
     #[serde(alias = "see_production_reports", rename = "see_production_reports")]

@@ -109,6 +109,7 @@ async fn create_roles(database: &Database) -> anyhow::Result<()> {
             PermissionType::EnrollTherapists,
             PermissionType::MakeProductionReports,
             PermissionType::MakeReports,
+            PermissionType::EnrollRelatives,
         ],
     )
     .await?;

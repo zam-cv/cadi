@@ -4,6 +4,7 @@ use crate::{
 };
 use actix_web::{post, web, HttpResponse, Responder, Result};
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
 #[derive(Deserialize, Serialize)]
 pub struct Therapist {
@@ -16,6 +17,14 @@ async fn create(
     therapist: web::Json<Therapist>,
     database: web::Data<Database>,
 ) -> Result<impl Responder> {
+    if let Err(_) = therapist.user.validate() {
+        return Ok(HttpResponse::BadRequest());
+    }
+
+    if let Err(_) = therapist.therapist.validate() {
+        return Ok(HttpResponse::BadRequest());
+    }
+
     let mut therapist = therapist.into_inner();
     let role_id = database
         .get_role_id_by_name(types::RoleType::Therapist)

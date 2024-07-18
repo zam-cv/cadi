@@ -201,4 +201,14 @@ impl Database {
         })
         .await
     }
+
+    pub async fn create_relative(&self, new_relative: models::Relative) -> anyhow::Result<i32> {
+        self.query_wrapper(move |conn| {
+            diesel::insert_into(schema::relatives::table)
+                .values(&new_relative)
+                .returning(schema::relatives::id)
+                .get_result(conn)
+        })
+        .await
+    }
 }

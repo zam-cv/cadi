@@ -17,6 +17,7 @@ import Home from "./pages/Home";
 
 import EnrollStudents from "./pages/Home/EnrollStudents";
 import EnrollTherapists from "./pages/Home/EnrollTherapists";
+import EnrollRelatives from "./pages/Home/EnrollRelatives";
 import MakeProductionReports from "./pages/Home/MakeProductionReports";
 import MakeReports from "./pages/Home/MakeReports";
 import SeeCalculator from "./pages/Home/SeeCalculator";
@@ -70,6 +71,15 @@ function App() {
                   element={
                     <Protected>
                       <EnrollTherapists />
+                    </Protected>
+                  }
+                />
+
+                <Route
+                  path="/enroll_relatives"
+                  element={
+                    <Protected>
+                      <EnrollRelatives />
                     </Protected>
                   }
                 />

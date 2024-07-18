@@ -22,6 +22,13 @@ export interface Therapist {
   phone: string;
 }
 
+export interface Relative {
+  firstname: string;
+  lastname: string;
+  location: string;
+  phone: string;
+}
+
 export default {
   auth: {
     signin: (email: string, password: string): Promise<Session> => {
@@ -37,6 +44,11 @@ export default {
   therapists: {
     create: (user: User, therapist: Therapist): Promise<void> => {
       return post("/therapist/create", { user, therapist });
+    }
+  },
+  relatives: {
+    create: (user: User, relative: Relative): Promise<void> => {
+      return post("/relative/create", { user, relative });
     }
   }
 };

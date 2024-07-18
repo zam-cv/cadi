@@ -32,6 +32,12 @@ const sections = [
     details: "Agregar terapeutas, etc"
   },
   {
+    route: "enroll_relatives",
+    title: "Inscribir Parientes",
+    description: "Inscribir parientes en el sistema",
+    details: "Agregar parientes, etc"
+  },
+  {
     route: "see_calculator",
     title: "Calculadora",
     description: "Calcular comidas",
