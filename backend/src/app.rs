@@ -33,6 +33,7 @@ pub async fn app() -> std::io::Result<()> {
                     .service(controllers::auth::routes())
                     .service(controllers::therapist::routes())
                     .service(controllers::relative::routes())
+                    .service(controllers::student::routes()),
             )
     })
     .bind(format!("{}:{}", host, port))?

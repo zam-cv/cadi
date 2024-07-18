@@ -1,0 +1,55 @@
+use crate::{
+  database::{Database, DbResponder},
+  models::{self, types},
+};
+use actix_web::{post, web, HttpResponse, Responder, Result};
+use serde::{Deserialize, Serialize};
+use validator::Validate;
+
+#[derive(Deserialize, Serialize)]
+pub struct Student {
+  pub user: models::User,
+  pub student: models::Student,
+}
+
+#[post("/create")]
+async fn create(
+  student: web::Json<Student>,
+  database: web::Data<Database>,
+) -> Result<impl Responder> {
+  if let Err(_) = student.user.validate() {
+      return Ok(HttpResponse::BadRequest());
+  }
+
+  if let Err(_) = student.student.validate() {
+      return Ok(HttpResponse::BadRequest());
+  }
+
+  let mut student = student.into_inner();
+  let role_id = database
+      .get_role_id_by_name(types::RoleType::Student)
+      .await
+      .to_web()?;
+
+  match role_id {
+      Some(role_id) => {
+          student.student.firstname = student.student.firstname.to_lowercase();
+          student.student.lastname = student.student.lastname.to_lowercase();
+          student.user.role_id = role_id;
+
+          let id = database.create_user(student.user).await.to_web()?;
+          student.student.user_id = id;
+          database
+              .create_student(student.student)
+              .await
+              .to_web()?;
+
+          Ok(HttpResponse::Ok())
+      }
+      None => Ok(HttpResponse::InternalServerError()),
+  }
+}
+
+pub fn routes() -> actix_web::Scope {
+  web::scope("/student").service(create)
+}

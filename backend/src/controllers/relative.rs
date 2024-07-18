@@ -2,7 +2,7 @@ use crate::{
   database::{Database, DbResponder},
   models::{self, types},
 };
-use actix_web::{post, web, HttpResponse, Responder, Result};
+use actix_web::{get, post, web, HttpResponse, Responder, Result};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
@@ -50,6 +50,14 @@ async fn create(
   }
 }
 
+#[get("/names")]
+async fn get_names(database: web::Data<Database>) -> Result<impl Responder> {
+  let relatives = database.get_relatives().await.to_web()?;
+  Ok(HttpResponse::Ok().json(relatives))
+}
+
 pub fn routes() -> actix_web::Scope {
-  web::scope("/relative").service(create)
+  web::scope("/relative")
+    .service(create)
+    .service(get_names)
 }

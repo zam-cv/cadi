@@ -29,6 +29,13 @@ export interface Relative {
   phone: string;
 }
 
+export interface Student {
+  relative_id: number;
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+}
+
 export default {
   auth: {
     signin: (email: string, password: string): Promise<Session> => {
@@ -49,6 +56,14 @@ export default {
   relatives: {
     create: (user: User, relative: Relative): Promise<void> => {
       return post("/relative/create", { user, relative });
+    },
+    getNames: (): Promise<[number, string][]> => {
+      return get("/relative/names");
+    }
+  },
+  student: {
+    create: (user: User, student: Student): Promise<void> => {
+      return post("/student/create", { user, student });
     }
   }
 };

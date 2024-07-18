@@ -211,4 +211,27 @@ impl Database {
         })
         .await
     }
+
+    pub async fn get_relatives(&self) -> anyhow::Result<Vec<(i32, String)>> {
+        self.query_wrapper(move |conn| {
+            schema::relatives::table
+                .inner_join(schema::users::table)
+                .select((
+                    schema::relatives::id,
+                    schema::relatives::firstname.concat(" ").concat(schema::relatives::lastname),
+                ))
+                .load(conn)
+        })
+        .await
+    }
+
+    pub async fn create_student(&self, new_student: models::Student) -> anyhow::Result<i32> {
+        self.query_wrapper(move |conn| {
+            diesel::insert_into(schema::students::table)
+                .values(&new_student)
+                .returning(schema::students::id)
+                .get_result(conn)
+        })
+        .await
+    }
 }

@@ -129,7 +129,10 @@ export default function EnrollRelatives() {
                 required
               />
             </div>
-            <Button type="submit" className="w-full" onClick={CreateRelative}>
+            <Button
+              type="submit"
+              className="w-full"
+              onClick={CreateRelative}>
               Inscribir
             </Button>
           </div>
