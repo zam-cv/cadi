@@ -1,5 +1,6 @@
-use crate::{config, utils};
+use crate::{config, utils, database::Database, models};
 use actix_web::{
+    web,
     body::MessageBody,
     dev::{ServiceRequest, ServiceResponse},
     Error, HttpMessage, HttpResponse,
@@ -68,10 +69,48 @@ pub async fn middleware(
     Ok(req.into_response(response).map_into_right_body())
 }
 
-#[allow(dead_code)]
 pub async fn user_middleware(
     req: ServiceRequest,
     next: Next<impl MessageBody + 'static>,
 ) -> Result<ServiceResponse<impl MessageBody>, Error> {
     middleware(req, next, &config::SECRET_KEY, config::HEADER_NAME).await
+}
+
+pub async fn permission_middleware(
+    req: ServiceRequest,
+    next: Next<impl MessageBody + 'static>,
+    permission: models::types::PermissionType,
+) -> Result<ServiceResponse<impl MessageBody>, Error> {
+    let user_id = req.extensions().get::<i32>().cloned();
+
+    if let Some(database) = req.app_data::<web::Data<Database>>() {
+        if let Some(user_id) = user_id {
+            if let Ok(true) = database.has_permission(user_id, permission).await {
+                return Ok(next.call(req).await?.map_into_left_body());
+            }
+        }
+    }
+
+    let response = HttpResponse::Unauthorized().finish();
+    Ok(req.into_response(response).map_into_right_body())
+}
+
+#[allow(dead_code)]
+pub async fn permissions_middleware(
+    req: ServiceRequest,
+    next: Next<impl MessageBody + 'static>,
+    permissions: Vec<models::types::PermissionType>,
+) -> Result<ServiceResponse<impl MessageBody>, Error> {
+    let user_id = req.extensions().get::<i32>().cloned();
+
+    if let Some(database) = req.app_data::<web::Data<Database>>() {
+        if let Some(user_id) = user_id {
+            if let Ok(true) = database.has_permissions(user_id, permissions).await {
+                return Ok(next.call(req).await?.map_into_left_body());
+            }
+        }
+    }
+
+    let response = HttpResponse::Unauthorized().finish();
+    Ok(req.into_response(response).map_into_right_body())
 }

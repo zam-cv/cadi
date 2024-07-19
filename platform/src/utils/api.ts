@@ -11,6 +11,7 @@ export interface Session {
 }
 
 export interface User {
+  id?: number;
   email: string;
   password: string;
 }
@@ -50,20 +51,23 @@ export default {
   },
   therapists: {
     create: (user: User, therapist: Therapist): Promise<void> => {
-      return post("/therapist/create", { user, therapist });
+      return post("/therapist/enroll/create", { user, therapist });
+    },
+    list: (): Promise<[User, Therapist][]> => {
+      return get("/therapist/see/all");
     }
   },
   relatives: {
     create: (user: User, relative: Relative): Promise<void> => {
-      return post("/relative/create", { user, relative });
+      return post("/relative/enroll/create", { user, relative });
     },
     getNames: (): Promise<[number, string][]> => {
-      return get("/relative/names");
+      return get("/relative/enroll/names");
     }
   },
   student: {
     create: (user: User, student: Student): Promise<void> => {
-      return post("/student/create", { user, student });
+      return post("/student/enroll/create", { user, student });
     }
   }
 };

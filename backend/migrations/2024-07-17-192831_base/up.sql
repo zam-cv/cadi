@@ -1,4 +1,5 @@
 -- Your SQL goes here
+BEGIN;
 CREATE TYPE ROLE_TYPE AS ENUM ('admin', 'therapist', 'student', 'relative');
 CREATE TYPE PERMISSION_TYPE AS ENUM ('see_dashboard', 'enroll_students', 'enroll_therapists', 'enroll_relatives', 'see_calculator', 'see_production_reports', 'see_reports', 'see_students', 'see_therapists', 'make_production_reports', 'make_reports', 'see_reports_as_relative');
 CREATE TYPE AREA_TYPE AS ENUM ('academic', 'social', 'emotional', 'physical', 'cognitive', 'language', 'sensory', 'behavioral', 'play', 'work', 'leisure', 'social_skills', 'communication', 'mobility', 'independence', 'safety', 'nutrition', 'hygiene', 'sleep', 'toileting', 'grooming', 'feeding', 'drinking', 'eating');
@@ -100,3 +101,5 @@ CREATE TABLE "evidences"(
 	"image" VARCHAR(500) NOT NULL,
 	FOREIGN KEY ("student_report_id") REFERENCES "student_reports"("id")
 );
+
+COMMIT;

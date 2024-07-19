@@ -218,7 +218,9 @@ impl Database {
                 .inner_join(schema::users::table)
                 .select((
                     schema::relatives::id,
-                    schema::relatives::firstname.concat(" ").concat(schema::relatives::lastname),
+                    schema::relatives::firstname
+                        .concat(" ")
+                        .concat(schema::relatives::lastname),
                 ))
                 .load(conn)
         })
@@ -231,6 +233,55 @@ impl Database {
                 .values(&new_student)
                 .returning(schema::students::id)
                 .get_result(conn)
+        })
+        .await
+    }
+
+    pub async fn has_permission(
+        &self,
+        user_id: i32,
+        permission: models::types::PermissionType,
+    ) -> anyhow::Result<bool> {
+        self.query_wrapper(move |conn| {
+            schema::users::table
+                .inner_join(schema::roles::table.inner_join(
+                    schema::role_permissions::table.inner_join(schema::permissions::table),
+                ))
+                .filter(schema::users::id.eq(user_id))
+                .filter(schema::permissions::name.eq(permission))
+                .select(diesel::dsl::count(schema::permissions::id))
+                .get_result(conn)
+                .map(|count: i64| count > 0)
+        })
+        .await
+    }
+
+    pub async fn has_permissions(
+        &self,
+        user_id: i32,
+        permissions: Vec<models::types::PermissionType>,
+    ) -> anyhow::Result<bool> {
+        self.query_wrapper(move |conn| {
+            let len = permissions.len() as i64;
+
+            schema::users::table
+                .inner_join(schema::roles::table.inner_join(
+                    schema::role_permissions::table.inner_join(schema::permissions::table),
+                ))
+                .filter(schema::users::id.eq(user_id))
+                .filter(schema::permissions::name.eq_any(permissions))
+                .select(diesel::dsl::count(schema::permissions::id))
+                .get_result(conn)
+                .map(|count: i64| count == len)
+        })
+        .await
+    }
+
+    pub async fn get_therapists(&self) -> anyhow::Result<Vec<(models::User, models::Therapist)>> {
+        self.query_wrapper(move |conn| {
+            schema::users::table
+                .inner_join(schema::therapists::table)
+                .load(conn)
         })
         .await
     }

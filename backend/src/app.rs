@@ -1,7 +1,7 @@
-use crate::{config, controllers, database::Database};
+use crate::{config, controllers, database::Database, middlewares};
 use actix_cors::Cors;
 use actix_web::{middleware::Logger, web, App, HttpServer};
-// use actix_web_lab::middleware::from_fn;
+use actix_web_lab::middleware::from_fn;
 use std::env;
 
 pub async fn app() -> std::io::Result<()> {
@@ -30,6 +30,7 @@ pub async fn app() -> std::io::Result<()> {
             // Mount the API routes
             .service(
                 web::scope("/api")
+                    .wrap(from_fn(middlewares::user_middleware))
                     .service(controllers::auth::routes())
                     .service(controllers::therapist::routes())
                     .service(controllers::relative::routes())

@@ -1,8 +1,10 @@
 use crate::{
     database::{Database, DbResponder},
+    middlewares,
     models::{self, types},
 };
-use actix_web::{post, web, HttpResponse, Responder, Result};
+use actix_web::{get, post, web, HttpResponse, Responder, Result};
+use actix_web_lab::middleware::from_fn;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
@@ -50,6 +52,34 @@ async fn create(
     }
 }
 
+#[get("/all")]
+async fn get_all(database: web::Data<Database>) -> Result<impl Responder> {
+    let therapists = database.get_therapists().await.to_web()?;
+    Ok(HttpResponse::Ok().json(therapists))
+}
+
 pub fn routes() -> actix_web::Scope {
-    web::scope("/therapist").service(create)
+    web::scope("/therapist")
+        .service(
+            web::scope("enroll")
+                .wrap(from_fn(|req, srv| {
+                    middlewares::permission_middleware(
+                        req,
+                        srv,
+                        types::PermissionType::EnrollTherapists,
+                    )
+                }))
+                .service(create),
+        )
+        .service(
+            web::scope("see")
+                .wrap(from_fn(|req, srv| {
+                    middlewares::permission_middleware(
+                        req,
+                        srv,
+                        types::PermissionType::SeeTherapists,
+                    )
+                }))
+                .service(get_all),
+        )
 }
