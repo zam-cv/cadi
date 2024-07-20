@@ -68,6 +68,9 @@ export default {
   student: {
     create: (user: User, student: Student): Promise<void> => {
       return post("/student/enroll/create", { user, student });
+    },
+    list: (): Promise<[User, Student, string, string][]> => {
+      return get("/student/see/all");
     }
   }
 };
