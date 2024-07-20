@@ -30,11 +30,14 @@ pub async fn app() -> std::io::Result<()> {
             // Mount the API routes
             .service(
                 web::scope("/api")
-                    .wrap(from_fn(middlewares::user_middleware))
                     .service(controllers::auth::routes())
-                    .service(controllers::therapist::routes())
-                    .service(controllers::relative::routes())
-                    .service(controllers::student::routes()),
+                    .service(
+                        web::scope("")
+                            .wrap(from_fn(middlewares::user_middleware))
+                            .service(controllers::therapist::routes())
+                            .service(controllers::relative::routes())
+                            .service(controllers::student::routes()),
+                    ),
             )
     })
     .bind(format!("{}:{}", host, port))?

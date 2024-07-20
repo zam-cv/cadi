@@ -47,6 +47,7 @@ pub async fn middleware(
         },
     };
 
+    log::info!("Token: {:?}", token);
     if let Some(token) = token {
         // Check if the token is valid
         let token = token.replace("Bearer ", "");

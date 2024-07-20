@@ -13,6 +13,7 @@ pub struct ProductionReport {
     #[serde(skip_deserializing)]
     #[diesel(deserialize_as = i32)]
     pub id: Option<i32>,
+    #[serde(skip_deserializing, skip_serializing)]
     pub report_id: i32,
     pub quantity: i32,
 }

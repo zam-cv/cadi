@@ -16,5 +16,6 @@ pub struct Report {
     pub title: String,
     #[validate(length(min = 0, max = 500))]
     pub description: String,
+    #[serde(skip_deserializing)]
     pub created_at: chrono::NaiveDateTime,
 }
