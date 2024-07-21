@@ -119,7 +119,7 @@ export default function Home() {
   const { userInformation } = useAuth()
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 p-5">
+    <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 p-5 bg-emerald-500">
       {
         userInformation.permissions.map((permission, i) => {
           const section = sections.find((section) => section.route === permission)

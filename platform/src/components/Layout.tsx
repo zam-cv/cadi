@@ -22,15 +22,15 @@ export default function Layout() {
   };
 
   return (
-    <>
+    <div className="grid grid-rows-[auto_1fr] h-full w-full fixed top-0 left-0">
       <div>
         {isAuthenticated ? <Header /> : null}
       </div>
-      <div className="overflow-hidden">
-        <div className="overflow-auto h-full">
+      <div className="h-full w-full overflow-auto">
+        <div className="h-full">
           <Outlet />
         </div>
       </div>
-    </>
+    </div>
   );
 }
