@@ -304,4 +304,38 @@ impl Database {
         })
         .await
     }
+
+    pub async fn create_production_report(
+        &self,
+        new_production_report: models::ProductionReport,
+    ) -> anyhow::Result<i32> {
+        self.query_wrapper(move |conn| {
+            diesel::insert_into(schema::production_reports::table)
+                .values(&new_production_report)
+                .returning(schema::production_reports::id)
+                .get_result(conn)
+        })
+        .await
+    }
+
+    pub async fn create_report(&self, new_report: models::Report) -> anyhow::Result<i32> {
+        self.query_wrapper(move |conn| {
+            diesel::insert_into(schema::reports::table)
+                .values(&new_report)
+                .returning(schema::reports::id)
+                .get_result(conn)
+        })
+        .await
+    }
+
+    pub async fn get_production_reports(
+        &self,
+    ) -> anyhow::Result<Vec<(models::Report, models::ProductionReport)>> {
+        self.query_wrapper(move |conn| {
+            schema::reports::table
+                .inner_join(schema::production_reports::table)
+                .load(conn)
+        })
+        .await
+    }
 }

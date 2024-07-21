@@ -48,6 +48,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         navigate("/home");
       })
       .catch((error) => {
+        console.log("errr");
         setIsLoading(false);
         setIsAuthenticated(false);
         console.error(error);

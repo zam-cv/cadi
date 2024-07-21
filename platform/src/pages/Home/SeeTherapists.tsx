@@ -13,7 +13,7 @@ export default function SeeTherapists() {
     api.therapists.list().then((v) => {
       let val = v.map(([user, therapists]) => {
         therapists.birthdate = moment(therapists.birthdate).format("DD - MM - YYYY")
-        return { ...user, ...therapists }
+        return { ...therapists, ...user }
       })
 
       setValues(val)

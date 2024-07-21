@@ -10,10 +10,10 @@ export default function SeeStudents() {
   const [values, setValues] = useState<Columns[]>([]);
 
   useEffect(() => {
-    api.student.list().then((v) => {
+    api.students.list().then((v) => {
       let val = v.map(([user, students, relative, phone]) => {
         students.birthdate = moment(students.birthdate).format("DD - MM - YYYY")
-        return { ...user, ...students, relative, phone }
+        return { ...students, ...user, relative, phone }
       })
 
       setValues(val)

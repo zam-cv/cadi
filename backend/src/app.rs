@@ -36,7 +36,8 @@ pub async fn app() -> std::io::Result<()> {
                             .wrap(from_fn(middlewares::user_middleware))
                             .service(controllers::therapist::routes())
                             .service(controllers::relative::routes())
-                            .service(controllers::student::routes()),
+                            .service(controllers::student::routes())
+                            .service(controllers::production_report::routes())
                     ),
             )
     })

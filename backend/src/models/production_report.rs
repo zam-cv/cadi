@@ -10,7 +10,7 @@ use diesel::prelude::*;
 #[diesel(belongs_to(Report))]
 #[diesel(table_name = schema::production_reports)]
 pub struct ProductionReport {
-    #[serde(skip_deserializing)]
+    #[serde(skip_deserializing, skip_serializing)]
     #[diesel(deserialize_as = i32)]
     pub id: Option<i32>,
     #[serde(skip_deserializing, skip_serializing)]

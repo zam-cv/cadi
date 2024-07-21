@@ -87,7 +87,7 @@ export default function EnrollStudents() {
       return;
     }
 
-    api.student.create({
+    api.students.create({
       email,
       password
     }, {

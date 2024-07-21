@@ -37,6 +37,17 @@ export interface Student {
   birthdate: string;
 }
 
+export interface Report {
+  id?: number;
+  title: string;
+  description: string;
+  created_at?: string;
+}
+
+export interface ProductionReport {
+  quantity: number;
+}
+
 export default {
   auth: {
     signin: (email: string, password: string): Promise<Session> => {
@@ -65,12 +76,20 @@ export default {
       return get("/relative/enroll/names");
     }
   },
-  student: {
+  students: {
     create: (user: User, student: Student): Promise<void> => {
       return post("/student/enroll/create", { user, student });
     },
     list: (): Promise<[User, Student, string, string][]> => {
       return get("/student/see/all");
+    }
+  },
+  productionReports: {
+    create: (report: Report, production_report: ProductionReport): Promise<void> => {
+      return post("/production-report/make/create", { report, production_report });
+    },
+    list: (): Promise<[Report, ProductionReport][]> => {
+      return get("/production-report/see/all");
     }
   }
 };
