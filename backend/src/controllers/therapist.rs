@@ -62,6 +62,23 @@ async fn get_all(database: web::Data<Database>) -> Result<impl Responder> {
     Ok(HttpResponse::Ok().json(therapists))
 }
 
+// #[get("/count")]
+// async fn count(database: web::Data<Database>) -> Result<impl Responder> {
+//     let count = database.count_therapists().await.to_web()?;
+//     Ok(HttpResponse::Ok().json(count))
+// }
+#[get("/count")]
+async fn count(database: web::Data<Database>) -> Result<impl Responder, actix_web::Error> {
+    match database.count_therapists().await {
+        Ok(count) => Ok(HttpResponse::Ok().json(count)),
+        Err(err) => {
+            eprintln!("Error counting therapists: {:?}", err);
+            Ok(HttpResponse::InternalServerError().json("Internal Server Error"))
+        }
+    }
+}
+
+
 pub fn routes() -> actix_web::Scope {
     web::scope("/therapist")
         .service(
@@ -85,5 +102,38 @@ pub fn routes() -> actix_web::Scope {
                     )
                 }))
                 .service(get_all),
+        )
+        // .service(
+        //     web::scope("see")
+        //         .wrap(from_fn(|req, srv| {
+        //             middlewares::permission_middleware(
+        //                 req,
+        //                 srv,
+        //                 types::PermissionType::SeeTherapists,
+        //             )
+        //         }))
+        //         .service(count),
+        // )
+        .service(
+            web::scope("/see")
+                .wrap(from_fn(|req, srv| {
+                    middlewares::permission_middleware(
+                        req,
+                        srv,
+                        types::PermissionType::SeeTherapists,
+                    )
+                }))
+                .service(count),
+        )
+        .service(
+            web::scope("see")
+                // .wrap(from_fn(|req, srv| {
+                //     middlewares::permission_middleware(
+                //         req,
+                //         srv,
+                //         types::PermissionType::SeeTherapists,
+                //     )
+                // }))
+                .service(count),
         )
 }

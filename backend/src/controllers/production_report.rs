@@ -37,6 +37,12 @@ async fn get_all(database: web::Data<Database>) -> Result<impl Responder> {
   Ok(HttpResponse::Ok().json(reports))
 }
 
+#[get("/count")]
+async fn count(database: web::Data<Database>) -> Result<impl Responder> {
+  let count = database.count_production_reports().await.to_web()?;
+  Ok(HttpResponse::Ok().json(count))
+}
+
 pub fn routes() -> actix_web::Scope {
   web::scope("/production-report")
       .service(
@@ -60,5 +66,16 @@ pub fn routes() -> actix_web::Scope {
                   )
               }))
               .service(get_all),
+      )
+      .service(
+          web::scope("see")
+              .wrap(from_fn(|req, srv| {
+                  middlewares::permission_middleware(
+                      req,
+                      srv,
+                      types::PermissionType::SeeProductionReports,
+                  )
+              }))
+              .service(count),
       )
 }
