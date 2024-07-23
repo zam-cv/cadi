@@ -394,7 +394,7 @@ export default function EnrollStudents() {
   const [searchTerm, setSearchTerm] = useState('');
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
-  const [breads, setBreads] = useState<Bread[]>([{value:"1",label:"Rosca de Reyes"}, {value:"2",label:"Pan de Muerto"}])
+  const [breads, setBreads] = useState<Bread[]>([{value:"1",label:"Rosca de Reyes"}, {value:"2",label:"Pan de Muerto"}, {value:"3", label:"Dona"}])
   const [breadsResults, setBreadsResults] = useState<Bread[]>([])
   const [quantity, setQuantity] = useState<number>(0);
   const [ingredients, setIngredients] = useState<Schema[]>([]);
@@ -428,67 +428,67 @@ export default function EnrollStudents() {
         return [
           {
             "id": "1",
-            "name": "harina",
-            "quantity": 500 * quantity,
+            "name": "Harina",
+            "quantity": 500 * quantity ,
             "cost": 30 * quantity
           },
           {
             "id": "2",
-            "name": "leche",
+            "name": "Leche",
             "quantity": 250 * quantity,
             "cost": 15 * quantity
           },
           {
             "id": "3",
-            "name": "azúcar",
+            "name": "Azúcar",
             "quantity": 100 * quantity,
             "cost": 10 * quantity
           },
           {
             "id": "4",
-            "name": "mantequilla",
+            "name": "Mantequilla",
             "quantity": 100 * quantity,
             "cost": 25 * quantity
           },
           {
             "id": "5",
-            "name": "huevos",
+            "name": "Huevos",
             "quantity": 3 * quantity,
             "cost": 9 * quantity
           },
           {
             "id": "6",
-            "name": "levadura",
+            "name": "Levadura",
             "quantity": 11 * quantity,
             "cost": 10 * quantity
           },
           {
             "id": "7",
-            "name": "sal",
+            "name": "Sal",
             "quantity": 5 * quantity,
             "cost": 1 * quantity
           },
           {
             "id": "8",
-            "name": "ralladura de naranja",
+            "name": "Ralladura de naranja",
             "quantity": 1 * quantity,
             "cost": 2 * quantity
           },
           {
             "id": "9",
-            "name": "ralladura de limón",
+            "name": "Ralladura de limón",
             "quantity": 1 * quantity,
             "cost": 2 * quantity
           },
           {
             "id": "10",
-            "name": "frutas cristalizadas",
+            "name": "Frutas desidratadas",
             "quantity": 150 * quantity,
             "cost": 50 * quantity
           },
           {
             "id": "11",
-            "name": "azúcar glas",
+            "name": "Azúcar glas",
             "quantity": 100 * quantity,
             "cost": 10 * quantity
           },         
@@ -499,67 +499,67 @@ export default function EnrollStudents() {
         return [
           {
             "id": "1",
-            "name": "harina",
+            "name": "Harina",
             "quantity": 500 * quantity,
             "cost": 30 * quantity
           },
           {
             "id": "2",
-            "name": "leche",
+            "name": "Leche",
             "quantity": 250 * quantity,
             "cost": 15 * quantity
           },
           {
             "id": "3",
-            "name": "azúcar",
+            "name": "Azúcar",
             "quantity": 150 * quantity,
             "cost": 15 * quantity
           },
           {
             "id": "4",
-            "name": "mantequilla",
+            "name": "Mantequilla",
             "quantity": 100 * quantity,
             "cost": 25 * quantity
           },
           {
             "id": "5",
-            "name": "huevos",
+            "name": "Huevos",
             "quantity": 4 * quantity,
             "cost": 12 * quantity
           },
           {
             "id": "6",
-            "name": "levadura",
+            "name": "Levadura",
             "quantity": 10 * quantity,
             "cost": 10 * quantity
           },
           {
             "id": "7",
-            "name": "sal",
+            "name": "Sal",
             "quantity": 5 * quantity,
             "cost": 1 * quantity
           },
           {
             "id": "8",
-            "name": "ralladura de naranja",
+            "name": "Ralladura de naranja",
             "quantity": 1 * quantity,
             "cost": 2 * quantity
           },
           {
             "id": "9",
-            "name": "agua de azahar",
+            "name": "Leche condensada",
             "quantity": 10 * quantity,
             "cost": 15 * quantity
           },
           {
             "id": "10",
-            "name": "manteca vegetal",
+            "name": "Manteca vegetal",
             "quantity": 50 * quantity,
             "cost": 20 * quantity
           },
           {
             "id": "11",
-            "name": "azúcar glas",
+            "name": "Azúcar glas",
             "quantity": 100 * quantity,
             "cost": 10 * quantity
           }
@@ -653,7 +653,7 @@ export default function EnrollStudents() {
                     </div>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="quantity">Cantidad</Label>
+                    <Label htmlFor="quantity">Cantidades en gramos</Label>
                     <Input
                       id="quantity"
                       type="number"
@@ -674,7 +674,7 @@ export default function EnrollStudents() {
             <div>
               <h2 className="text-2xl font-bold tracking-tight">Ingredientes</h2>
               <p className="text-muted-foreground">
-                Cantidades de los ingredientes para el pedido
+                Cantidades de los ingredientes para el pedido(Las cantidades estan en gramos)
               </p>
             </div>
           </div>
