@@ -66,6 +66,9 @@ export default {
     },
     list: (): Promise<[User, Therapist][]> => {
       return get("/therapist/see/all");
+    }, 
+    count: (): Promise<number> => {
+      return get("/therapist/see/count");
     }
   },
   relatives: {
@@ -96,6 +99,9 @@ export default {
     },
     list: (): Promise<[Report, ProductionReport][]> => {
       return get("/production-report/see/all");
+    },
+    count: (): Promise<number> => {
+      return get("/production-report/see/count");
     }
   }
 };

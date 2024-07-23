@@ -101,10 +101,11 @@ pub fn routes() -> actix_web::Scope {
                         types::PermissionType::SeeTherapists,
                     )
                 }))
-                .service(get_all),
+                .service(get_all)
+                .service(count),
         )
         // .service(
-        //     web::scope("see")
+        //     web::scope("counts")
         //         .wrap(from_fn(|req, srv| {
         //             middlewares::permission_middleware(
         //                 req,
@@ -114,26 +115,4 @@ pub fn routes() -> actix_web::Scope {
         //         }))
         //         .service(count),
         // )
-        .service(
-            web::scope("/see")
-                .wrap(from_fn(|req, srv| {
-                    middlewares::permission_middleware(
-                        req,
-                        srv,
-                        types::PermissionType::SeeTherapists,
-                    )
-                }))
-                .service(count),
-        )
-        .service(
-            web::scope("see")
-                // .wrap(from_fn(|req, srv| {
-                //     middlewares::permission_middleware(
-                //         req,
-                //         srv,
-                //         types::PermissionType::SeeTherapists,
-                //     )
-                // }))
-                .service(count),
-        )
 }

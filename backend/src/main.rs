@@ -1,4 +1,5 @@
 use dotenv::dotenv;
+use log::info;
 
 mod app;
 mod config;

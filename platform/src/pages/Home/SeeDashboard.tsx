@@ -82,7 +82,7 @@ export default function SeeDashboard() {
   const [meanAge, setMeanAge] = useState<number>(0); // Add state for mean age
   const [valuesTher, setValuesTher] = useState<TherapistQ[]>([]);
   const [therapistCount, setTherapistCount] = useState(-1); // Add state for student count
-  const [prodReportsCount, setProdReportsCount] = useState(0); // Add state for production reports count
+  const [prodReportsCount, setProdReportsCount] = useState(-1); // Add state for production reports count
   const [areaTypeArrayFormatted, setAreaTypeArrayFormatted] = useState<{ areaType: string; numberReports: number }[]>([]); // Add state for formatted ages array
 
 
@@ -139,22 +139,24 @@ export default function SeeDashboard() {
     // Update the state of production reports count using the api productionReports.count
     api.productionReports.count().then((v) => {
       setProdReportsCount(v);
+    }).catch((error) => {
+      console.error('Failed to count production reports:', error);
     });
 
     // Update the state of areaTypeArrayFormatted using the student_reports.api
-    const fetchData = async () => {
-      const result = await Promise.all(
-        Object.keys(AreaType).map(async (area) => ({
-          areaType: AreaType[area],
-          numberReports: await api.studentReports.countArea(area),
-        }))
-      );
+    // const fetchData = async () => {
+    //   const result = await Promise.all(
+    //     Object.keys(AreaType).map(async (area) => ({
+    //       areaType: AreaType[area],
+    //       numberReports: await api.studentReports.countArea(area),
+    //     }))
+    //   );
 
-      setAreaTypeArrayFormatted(result);
+    //   setAreaTypeArrayFormatted(result);
 
-    };
+    // };
 
-    fetchData();
+    // fetchData();
     
     
   }, []);

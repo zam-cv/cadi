@@ -3,6 +3,8 @@ use actix_web::web;
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager, PooledConnection};
 use std::env;
+use diesel::dsl::count_star;
+use anyhow::Result;
 
 pub trait DbResponder<T> {
     fn to_web(self) -> actix_web::Result<T, actix_web::Error>;
@@ -286,6 +288,32 @@ impl Database {
         .await
     }
 
+    // Function that counts the number of therapists in the database
+    pub async fn count_therapists(&self) -> Result<i64> {
+        log::info!("Starting count_therapists function");
+        let result = self.query_wrapper(move |conn| {
+            log::info!("Executing count query on therapists table");
+            schema::therapists::table
+                .select(count_star())
+                .first::<i64>(conn)
+                .map_err(|e| {
+                    log::error!("Error counting therapists: {:?}", e);
+                    e
+                })
+        }).await;
+
+        match result {
+            Ok(count) => {
+                log::info!("Successfully counted therapists: {}", count);
+                Ok(count)
+            },
+            Err(e) => {
+                log::error!("Failed to count therapists: {:?}", e);
+                Err(e)
+            }
+        }
+    }
+
     pub async fn get_students(
         &self,
     ) -> anyhow::Result<Vec<(models::User, models::Student, String, String)>> {
@@ -337,6 +365,32 @@ impl Database {
                 .load(conn)
         })
         .await
+    }
+
+    // Function that counts the number of production reports in the database
+    pub async fn count_production_reports(&self) -> Result<i64> {
+        log::info!("Starting count_production_reports function");
+        let result = self.query_wrapper(move |conn| {
+            log::info!("Executing count query on production_reports table");
+            schema::production_reports::table
+                .select(count_star())
+                .first::<i64>(conn)
+                .map_err(|e| {
+                    log::error!("Error counting production_reports: {:?}", e);
+                    e
+                })
+        }).await;
+
+        match result {
+            Ok(count) => {
+                log::info!("Successfully counted production_reports: {}", count);
+                Ok(count)
+            },
+            Err(e) => {
+                log::error!("Failed to count production_reports: {:?}", e);
+                Err(e)
+            }
+        }
     }
 
     pub async fn get_students_names(&self) -> anyhow::Result<Vec<(i32, String)>> {

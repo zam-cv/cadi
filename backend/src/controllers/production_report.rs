@@ -38,9 +38,14 @@ async fn get_all(database: web::Data<Database>) -> Result<impl Responder> {
 }
 
 #[get("/count")]
-async fn count(database: web::Data<Database>) -> Result<impl Responder> {
-  let count = database.count_production_reports().await.to_web()?;
-  Ok(HttpResponse::Ok().json(count))
+async fn count(database: web::Data<Database>) -> Result<impl Responder, actix_web::Error> {
+    match database.count_production_reports().await {
+        Ok(count) => Ok(HttpResponse::Ok().json(count)),
+        Err(err) => {
+            eprintln!("Error counting production_reports: {:?}", err);
+            Ok(HttpResponse::InternalServerError().json("Internal Server Error"))
+        }
+    }
 }
 
 pub fn routes() -> actix_web::Scope {
@@ -65,17 +70,18 @@ pub fn routes() -> actix_web::Scope {
                       types::PermissionType::SeeProductionReports,
                   )
               }))
-              .service(get_all),
-      )
-      .service(
-          web::scope("see")
-              .wrap(from_fn(|req, srv| {
-                  middlewares::permission_middleware(
-                      req,
-                      srv,
-                      types::PermissionType::SeeProductionReports,
-                  )
-              }))
+              .service(get_all)
               .service(count),
       )
+      // .service(
+      //     web::scope("see")
+      //         .wrap(from_fn(|req, srv| {
+      //             middlewares::permission_middleware(
+      //                 req,
+      //                 srv,
+      //                 types::PermissionType::SeeProductionReports,
+      //             )
+      //         }))
+      //         .service(count),
+      // )
 }
