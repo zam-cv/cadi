@@ -338,4 +338,19 @@ impl Database {
         })
         .await
     }
+
+    pub async fn get_students_names(&self) -> anyhow::Result<Vec<(i32, String)>> {
+        self.query_wrapper(move |conn| {
+            schema::students::table
+                .inner_join(schema::users::table)
+                .select((
+                    schema::students::id,
+                    schema::students::firstname
+                        .concat(" ")
+                        .concat(schema::students::lastname),
+                ))
+                .load(conn)
+        })
+        .await
+    }
 }

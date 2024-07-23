@@ -16,10 +16,14 @@ pub struct Therapist {
 
 #[post("/create")]
 async fn create(
-    therapist: web::Json<Therapist>,
+    mut therapist: web::Json<Therapist>,
     database: web::Data<Database>,
 ) -> Result<impl Responder> {
     if let Err(_) = therapist.user.validate() {
+        return Ok(HttpResponse::BadRequest());
+    }
+
+    if let Err(_) = therapist.user.hash_password() {
         return Ok(HttpResponse::BadRequest());
     }
 

@@ -70,7 +70,7 @@ export default function MakeProductionReports() {
             </div>
             <div>
               <div className="grid gap-2">
-                <Label htmlFor="phone">Descripción</Label>
+                <Label htmlFor="description">Descripción</Label>
                 <Textarea
                   id="description"
                   placeholder="Descripción del reporte"
