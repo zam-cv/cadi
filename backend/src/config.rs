@@ -3,8 +3,7 @@ use crate::{
     models::{
         self,
         types::{PermissionType, RoleType},
-    },
-    utils,
+    }
 };
 use lazy_static::lazy_static;
 use std::env;
@@ -149,29 +148,24 @@ async fn create_default_admin(database: &Database) -> anyhow::Result<()> {
             log::info!("Admin already exists");
             Ok(())
         }
-        None => match utils::hash_password(&password.clone()) {
-            Ok(hash) => {
-                let role_id = database
-                    .get_role_id_by_name(RoleType::Admin)
-                    .await?
-                    .expect("Admin role not found");
+        None => {
+            let role_id = database
+                .get_role_id_by_name(RoleType::Admin)
+                .await?
+                .expect("Admin role not found");
 
-                let new_admin = models::User {
-                    id: None,
-                    email,
-                    password: hash,
-                    role_id,
-                };
+            let mut new_admin = models::User {
+                id: None,
+                email,
+                password,
+                role_id,
+            };
 
-                database.create_user(new_admin).await?;
-                log::info!("Admin created");
-                Ok(())
-            }
-            Err(_) => {
-                log::error!("Failed to hash password");
-                Err(anyhow::anyhow!("Failed to hash password"))
-            }
-        },
+            new_admin.hash_password()?;
+            database.create_user(new_admin).await?;
+            log::info!("Admin created");
+            Ok(())
+        }
     }
 }
 

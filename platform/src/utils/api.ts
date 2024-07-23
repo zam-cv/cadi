@@ -82,6 +82,12 @@ export default {
     },
     list: (): Promise<[User, Student, string, string][]> => {
       return get("/student/see/all");
+    },
+    areas: (): Promise<string[]> => {
+      return get("/student/create-report/areas");
+    },
+    names: (): Promise<[number, string][]> => {
+      return get("/student/create-report/names");
     }
   },
   productionReports: {

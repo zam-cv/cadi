@@ -5,8 +5,14 @@ use crate::{
 };
 use actix_web::{get, post, web, HttpResponse, Responder, Result};
 use actix_web_lab::middleware::from_fn;
+use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
+use strum::IntoEnumIterator;
 use validator::Validate;
+
+lazy_static! {
+    pub static ref AREAS: Vec<types::AreaType> = types::AreaType::iter().collect();
+}
 
 #[derive(Deserialize, Serialize)]
 pub struct Student {
@@ -16,10 +22,14 @@ pub struct Student {
 
 #[post("/create")]
 async fn create(
-    student: web::Json<Student>,
+    mut student: web::Json<Student>,
     database: web::Data<Database>,
 ) -> Result<impl Responder> {
     if let Err(_) = student.user.validate() {
+        return Ok(HttpResponse::BadRequest());
+    }
+
+    if let Err(_) = student.user.hash_password() {
         return Ok(HttpResponse::BadRequest());
     }
 
@@ -55,6 +65,17 @@ async fn get_all(database: web::Data<Database>) -> Result<impl Responder> {
     Ok(HttpResponse::Ok().json(students))
 }
 
+#[get("/areas")]
+async fn get_areas() -> Result<impl Responder> {
+    Ok(HttpResponse::Ok().json(&*AREAS))
+}
+
+#[get("/names")]
+async fn get_names(database: web::Data<Database>) -> Result<impl Responder> {
+    let students = database.get_students_names().await.to_web()?;
+    Ok(HttpResponse::Ok().json(students))
+}
+
 pub fn routes() -> actix_web::Scope {
     web::scope("/student")
         .service(
@@ -78,5 +99,17 @@ pub fn routes() -> actix_web::Scope {
                     )
                 }))
                 .service(get_all),
+        )
+        .service(
+            web::scope("create-report")
+                .wrap(from_fn(|req, srv| {
+                    middlewares::permission_middleware(
+                        req,
+                        srv,
+                        types::PermissionType::MakeReports,
+                    )
+                }))
+                .service(get_areas)
+                .service(get_names),
         )
 }

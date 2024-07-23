@@ -16,10 +16,14 @@ pub struct Relative {
 
 #[post("/create")]
 async fn create(
-    relative: web::Json<Relative>,
+    mut relative: web::Json<Relative>,
     database: web::Data<Database>,
 ) -> Result<impl Responder> {
     if let Err(_) = relative.user.validate() {
+        return Ok(HttpResponse::BadRequest());
+    }
+
+    if let Err(_) = relative.user.hash_password() {
         return Ok(HttpResponse::BadRequest());
     }
 

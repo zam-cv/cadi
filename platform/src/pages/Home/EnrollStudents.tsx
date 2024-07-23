@@ -118,9 +118,9 @@ export default function EnrollStudents() {
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="first-name">Nombres</Label>
+                <Label htmlFor="firstname">Nombres</Label>
                 <Input
-                  id="first-name"
+                  id="firstname"
                   placeholder="Max"
                   onChange={(e) => setFirstName(e.target.value)}
                   value={firstName}
@@ -128,9 +128,9 @@ export default function EnrollStudents() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="last-name">Apellidos</Label>
+                <Label htmlFor="lastname">Apellidos</Label>
                 <Input
-                  id="last-name"
+                  id="lastname"
                   placeholder="Robinson"
                   onChange={(e) => setLastName(e.target.value)}
                   value={lastName}

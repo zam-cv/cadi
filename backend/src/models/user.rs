@@ -1,4 +1,4 @@
-use crate::{schema, models::*};
+use crate::{schema, models::*, utils};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 use diesel::prelude::*;
@@ -20,4 +20,19 @@ pub struct User {
     pub password: String,
     #[serde(skip_deserializing, skip_serializing)]
     pub role_id: i32,
+}
+
+impl User {
+    pub fn hash_password(&mut self) -> anyhow::Result<()> {
+        match utils::hash_password(&self.password.clone()) {
+            Ok(hash) => {
+                self.password = hash;
+                Ok(())
+            }
+            Err(_) => {
+                log::error!("Failed to hash password");
+                anyhow::bail!("Failed to hash password")
+            }
+        }
+    }
 }
