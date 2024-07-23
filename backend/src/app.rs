@@ -38,6 +38,7 @@ pub async fn app() -> std::io::Result<()> {
                             .service(controllers::relative::routes())
                             .service(controllers::student::routes())
                             .service(controllers::production_report::routes())
+                            .service(controllers::student_report::routes())
                     ),
             )
     })

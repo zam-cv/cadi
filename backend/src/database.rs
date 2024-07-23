@@ -407,4 +407,42 @@ impl Database {
         })
         .await
     }
+
+    // Function that gets all student reports from the database
+    pub async fn get_student_reports(
+        &self,
+    ) -> anyhow::Result<Vec<(models::Report, models::StudentReport)>> {
+        self.query_wrapper(move |conn| {
+            schema::reports::table
+                .inner_join(schema::student_reports::table)
+                .load(conn)
+        })
+        .await
+    }
+
+    // Function that counts the number of student reports in the database
+    pub async fn count_student_reports(&self) -> Result<i64> {
+        log::info!("Starting count_student_reports function");
+        let result = self.query_wrapper(move |conn| {
+            log::info!("Executing count query on student_reports table");
+            schema::student_reports::table
+                .select(count_star())
+                .first::<i64>(conn)
+                .map_err(|e| {
+                    log::error!("Error counting student_reports: {:?}", e);
+                    e
+                })
+        }).await;
+
+        match result {
+            Ok(count) => {
+                log::info!("Successfully counted student_reports: {}", count);
+                Ok(count)
+            },
+            Err(e) => {
+                log::error!("Failed to count student_reports: {:?}", e);
+                Err(e)
+            }
+        }
+    }
 }

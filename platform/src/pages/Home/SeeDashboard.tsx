@@ -84,6 +84,7 @@ export default function SeeDashboard() {
   const [therapistCount, setTherapistCount] = useState(-1); // Add state for student count
   const [prodReportsCount, setProdReportsCount] = useState(-1); // Add state for production reports count
   const [areaTypeArrayFormatted, setAreaTypeArrayFormatted] = useState<{ areaType: string; numberReports: number }[]>([]); // Add state for formatted ages array
+  const [studReportsCount, setStudReportsCount] = useState(-1); // Add state for student reports count
 
 
   useEffect(() => {
@@ -135,12 +136,18 @@ export default function SeeDashboard() {
       console.error('Failed to count therapists:', error);
     });
     
-
     // Update the state of production reports count using the api productionReports.count
     api.productionReports.count().then((v) => {
       setProdReportsCount(v);
     }).catch((error) => {
       console.error('Failed to count production reports:', error);
+    });
+
+    // Update the state of student reports count using the api studentReports.count
+    api.studentReports.count().then((v) => {
+      setStudReportsCount(v);
+    }).catch((error) => {
+      console.error('Failed to count student reports:', error);
     });
 
     // Update the state of areaTypeArrayFormatted using the student_reports.api
@@ -253,7 +260,7 @@ export default function SeeDashboard() {
           <CardHeader className="space-y-0 pb-2">
             <CardDescription>Reportes de Alumnos por Área</CardDescription>
             <CardTitle className="text-4xl tabular-nums">
-              500{" "}
+              {studReportsCount}{" "}
               <span className="font-sans text-sm font-normal tracking-normal text-muted-foreground">
                 reportes en total
               </span>

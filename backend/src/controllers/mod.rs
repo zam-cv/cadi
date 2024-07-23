@@ -3,3 +3,4 @@ pub mod therapist;
 pub mod relative;
 pub mod student;
 pub mod production_report;
+pub mod student_report;

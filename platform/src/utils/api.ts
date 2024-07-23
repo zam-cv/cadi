@@ -48,6 +48,13 @@ export interface ProductionReport {
   quantity: number;
 }
 
+export interface StudentReport {
+  student_id: number;
+  report_id: number;
+  area: string;
+  description: string;
+}
+
 export default {
   auth: {
     signin: (email: string, password: string): Promise<Session> => {
@@ -102,6 +109,14 @@ export default {
     },
     count: (): Promise<number> => {
       return get("/production-report/see/count");
+    }
+  }, 
+  studentReports:{
+    list: (): Promise<[Report,StudentReport][]> => {
+      return get("/student-report/see/all");
+    },
+    count: (): Promise<number> => {
+      return get("/student-report/see/count");
     }
   }
 };
